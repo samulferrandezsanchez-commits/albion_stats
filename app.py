@@ -12,7 +12,14 @@ sns.set_theme(style="whitegrid")
 # CONFIG
 # -----------------------------
 BASE_ITEMS = [
-    "T2_ORE", "T3_ORE", "T4_ORE", "T5_ORE", "T6_ORE", "T7_ORE", "T8_ORE"
+    # ORE
+    "T2_ORE","T3_ORE","T4_ORE","T5_ORE","T6_ORE","T7_ORE","T8_ORE",
+
+    # WOOD
+    "T2_WOOD","T3_WOOD","T4_WOOD","T5_WOOD","T6_WOOD","T7_WOOD","T8_WOOD",
+
+    # STONE
+    "T2_STONE","T3_STONE","T4_STONE","T5_STONE","T6_STONE","T7_STONE","T8_STONE"
 ]
 
 CIUDADES = [
