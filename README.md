@@ -1,19 +1,11 @@
-# tcoches_alquiler
+# Sistema alquiler de coches
 
 Aplicación de consola para gestionar vehículos, clientes, trabajadores, sedes y alquileres, con separación por capas (`Entidades`, `Servicios`, `UI`, `Persistencias`).
 
-**Autores:** Samuel y Lorenzo
+**Autores:** Samuel Ferrández Sánchez y Lorenzo Villalobos Pizarro
 
-## Objetivo del proyecto
-
-Este repositorio implementa un dominio académico de empresa de alquiler de vehículos con foco en:
-
-- Modelado orientado a objetos y encapsulación
-- Herencia y polimorfismo (`Vehiculo` como base de `Coche`, `Furgoneta` y `Moto`)
-- Jerarquía de trabajadores con método abstracto `calcular_sueldo`
-- Reglas de negocio explícitas sin lógica de presentación en dominio/servicios
-- Arquitectura por capas con dependencias dirigidas (`UI → Servicios → Entidades`)
-
+## Descripcion
+Este progrma implementa un sistema de gestion para una empresa de alquiler de coches. Esta orientado al uso interno de la empresea(empleados) y incluye gestion de sedes, vehiculos, alquileres, trabajadores, empleados, alquilers, reservas y mantenimiento. Todo esto basado en una arquitectura por capas y en programacion orientada a objetos.
 ## Requisitos
 
 - Python 3.12 o superior
@@ -192,7 +184,7 @@ gestor_cliente.añadir_metodo_pago('12345678Z', 'Tarjeta Credito')
 gestor_alquiler.crear_reserva('1234ABC', '01-05-2026', '05-05-2026')
 ```
 
-## Diagrama UML de clases (Mermaid)
+## Diagrama UML de clases (Mermaid-Simplificado)
 
 ```mermaid
 classDiagram
@@ -300,18 +292,8 @@ C4Container
     Rel(servicios, persistencia, "Preparado para integrar", "(futuro)")
 ```
 
-## Ejecutar tests
-
-```bash
-python -m pytest -q
-```
-
 ## Estado actual y evolución
 
 - Persistencia real aún no implementada (`Persistencias/__init__.py` placeholder).
-- `CocheElectrico` definido en `Entidades/coche_electrico.py` pendiente de implementación completa.
-- La lógica de descuento en `Alquiler.precio_alquiler()` referencia `self.dias_alquiler` — pendiente de unificar con `diferecia_dias`.
+- Uso de funciones aun no implementadas como inicio_alquiler o actilzar_tarifa en el caso de la furgoneta, etc.
 
-## Notas
-
-Proyecto desarrollado con fines educativos en el contexto de programación orientada a objetos con Python.
