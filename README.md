@@ -73,17 +73,61 @@ Menú principal (`UI/menu.py`):
 - Crear alquiler (vincula cliente, vehículo y vendedor)
 - Buscar alquiler por código
 
-## Reglas de dominio más importantes
+## Reglas de negocio
 
-- `Vehiculo` centraliza el estado común: matrícula, marca, modelo, depósito, kilómetros, averías, reservas y ocupación (`Entidades/vehiculo.py`).
-- `Coche` añade número de asientos y un contador de clase (`Entidades/coche.py`).
-- `Furgoneta` ajusta el precio diario según capacidad de carga y tamaño (`Entidades/furgoneta.py`).
-- `Moto` expone la cilindrada como propiedad protegida (`Entidades/moto.py`).
-- `Trabajador` es abstracto; `Jefe`, `Vendedor` y `Limpiador` implementan `calcular_sueldo` con tarifas por hora distintas (`Entidades/trabajador.py`).
-- `Cliente` requiere ser mayor de edad y debe tener al menos un método de pago para poder alquilar (`Entidades/cliente.py`).
-- `Alquiler` acumula puntos de fidelidad al cliente al iniciar y aplica descuentos por duración o uso de puntos al calcular el precio (`Entidades/alquiler.py`).
-- `Reserva` detecta solapamiento de fechas para impedir doble reserva del mismo vehículo (`Entidades/reserva.py`).
-- `GestionAlquiler` valida que el trabajador sea un `Vendedor` antes de crear el alquiler (`Servicios/GestionAlquiler.py`).
+### Clientes
+
+- El cliente debe ser **mayor de edad** (≥ 18 años) para poder darse de alta en el sistema.
+- Para poder realizar un alquiler, el cliente debe tener **al menos un método de pago** registrado (Tarjeta Crédito, Cuenta Bancaria, Cheque o Efectivo).
+- Un cliente **no puede tener duplicado** el mismo método de pago.
+- Los métodos de pago aceptados son únicamente los cuatro predefinidos; cualquier otro valor es rechazado.
+
+### Reservas
+
+- Antes de crear un alquiler, el vehículo debe tener una **reserva previa** con exactamente las mismas fechas de inicio y fin.
+- No se pueden crear dos reservas cuyas fechas se **solapen** en el mismo vehículo.
+- Las fechas deben seguir el formato `DD-MM-YYYY`; cualquier otro formato es inválido.
+- La fecha de fin debe ser **posterior** a la de inicio.
+
+### Alquileres
+
+- Solo puede gestionar un alquiler un trabajador con rol **Vendedor**; un Jefe o Limpiador no puede crear alquileres.
+- El vehículo debe estar **disponible** (no ocupado) en el momento de crear el alquiler.
+- Al iniciar el alquiler el cliente recibe **20 puntos** de fidelidad y el vehículo pasa a estado ocupado.
+- Al finalizar el alquiler la fecha de devolución debe ser **igual o posterior** a la de recogida.
+- No se puede finalizar un alquiler con una fecha anterior a la de recogida del vehículo.
+
+### Descuentos y puntos de fidelidad
+
+- Alquiler de **7 a 13 días**: descuento del **5 %** sobre el precio base.
+- Alquiler de **14 días o más**: descuento del **10 %** sobre el precio base.
+- Si el cliente tiene **100 puntos o más**, puede canjear **25 puntos** por un descuento adicional del **10 %**.
+- Los descuentos por duración y por puntos son **acumulables**.
+
+### Trabajadores
+
+- Los tres roles disponibles son `jefe`, `vendedor` y `limpiador`; cualquier otro cargo es rechazado.
+- No se puede contratar a un trabajador con un DNI ya registrado en el sistema.
+- Los sueldos se calculan automáticamente al contratar según el rol:
+  - **Jefe**: 100 € / hora
+  - **Vendedor**: 15 € / hora
+  - **Limpiador**: 10 € / hora
+- Un trabajador solo puede ser asignado **una vez** a la misma sede.
+
+### Vehículos y sedes
+
+- No se pueden registrar dos vehículos con la **misma matrícula** en todo el sistema.
+- Echar gasolina a un vehículo de tipo `electrico` genera automáticamente una **avería** ("Explosión de motor por combustible").
+- No se puede superar la **capacidad del depósito** al repostar; si se intenta, el depósito queda al máximo.
+- Una avería solo se puede añadir si pertenece al catálogo de averías predefinido y el vehículo **no la tiene ya** registrada.
+- No se puede registrar la misma sede dos veces (mismo ID de sede).
+
+### Furgonetas
+
+- El precio diario de una furgoneta se ajusta automáticamente según:
+  - Capacidad de carga: 800 kg → ×1.0 | 1000 kg → ×1.1 | 1200 kg → ×1.2
+  - Tamaño: Pequeña → +0 € | Mediana → +10 € | Grande → +20 €
+- Un tamaño fuera de los valores permitidos es rechazado.
 
 ## Arquitectura y estructura
 
